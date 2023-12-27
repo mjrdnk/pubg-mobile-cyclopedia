@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUBG Mobile cyclopedia</title>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      #loading-indicator {
+        text-align: center;
+      }
+
+      .map-title {
+        text-align: center;
+      }
+
+      .map-image {
+        display: block;
+        margin: 0 auto;
+        width: 200px;
+        height: auto;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PUBG Mobile cyclopedia</h1>
+
+    <div id="loading-indicator">Loading...</div>
+    <div id="container"></div>
+  </body>
+
+  <script>
+    const container = document.getElementById("container");
+    const loadingIndicator = document.getElementById("loading-indicator");
+
+    fetch("http://localhost:3000/api/maps")
+      // , { headers, mode: "cors" })
+      //   .then((res) => res.json())
+      .then(async (res) => {
+        loadingIndicator.remove();
+        const data = await res.json();
+
+        data.forEach((map) => {
+          const { id, name, imageUrl } = map;
+
+          const mapElement = document.createElement("div");
+          mapElement.innerHTML = `
+                <h2 class="map-title">${name}</h2>
+                <img src="${imageUrl}" alt="${name}" class="map-image" />
+            `;
+
+          container.appendChild(mapElement);
+        });
+      });
+  </script>
+</html>
